@@ -1,35 +1,58 @@
-# Arctic-Sea-Ice-Extent-SARIMA-Forecasting-Analysis
+# Arctic Sea Ice Extent: SARIMA Forecasting Analysis
 
 A time series analysis of monthly Arctic sea ice extent (1979–2005), fitting and validating a SARIMA model in R.
 
-Overview
+## Overview
+
 This project explores whether Arctic sea ice extent, a strongly seasonal climate variable, can be forecast using classical time series methods. Unlike financial return data, this series has real, identifiable trend and seasonal structure, making it a useful contrast case for practicing the full ARIMA/SARIMA workflow: decomposition, stationarity testing, model selection, residual diagnostics, and out-of-sample validation.
 
-Data
-Source: TTU Time Series Datasets, MonthlyArcticSeaIce1979-2005.tsm
-Range: January 1979 – December 2005
-Frequency: Monthly (324 observations)
-Units: Million square kilometers
+## Data
 
-Methodology
-Visual inspection — plotted the raw series, revealing a strong repeating annual cycle plus a gradual downward trend.
-Decomposition — used decompose() to separate trend, seasonal, and remainder components, confirming a decline from roughly 12.7 to 11.2 million sq km over the period.
-Stationarity testing — ADF and KPSS tests on the raw series were misleading due to large seasonal swings masking the trend. nsdiffs() and ndiffs() gave the correct read: one seasonal difference needed, no regular differencing needed. Applied one seasonal difference and re-confirmed stationarity.
-Model selection — auto.arima() selected SARIMA(1,0,0)(0,1,1)[12].
-Residual diagnostics — Ljung-Box test on residuals: p = 0.616, no leftover autocorrelation.
-Volatility check — ARCH-LM test: p = 0.160, no significant volatility clustering; GARCH not required.
-Forecasting — generated a 24-month-ahead forecast, correctly reproducing the seasonal wave and ongoing decline.
-Validation — trained on the first 300 months, held out the final 24 months, and scored the forecast against the real, hidden values.
+- **Source:** [TTU Time Series Datasets](https://www.math.ttu.edu/~atrindad/tsdata/index.html), `MonthlyArcticSeaIce1979-2005.tsm`
+- **Range:** January 1979 – December 2005
+- **Frequency:** Monthly (324 observations)
+- **Units:** Million square kilometers
 
-Results
-Metric	Value
-RMSE	0.5246
-MAE  	0.4663
+## Methodology
+
+1. **Visual inspection** — plotted the raw series, revealing a strong repeating annual cycle plus a gradual downward trend.
+2. **Decomposition** — used `decompose()` to separate trend, seasonal, and remainder components, confirming a decline from roughly 12.7 to 11.2 million sq km over the period.
+3. **Stationarity testing** — ADF and KPSS tests on the raw series were misleading due to large seasonal swings masking the trend. `nsdiffs()` and `ndiffs()` gave the correct read: one seasonal difference needed, no regular differencing needed. Applied one seasonal difference and re-confirmed stationarity.
+4. **Model selection** — `auto.arima()` selected **SARIMA(1,0,0)(0,1,1)[12]**.
+5. **Residual diagnostics** — Ljung-Box test on residuals: p = 0.616, no leftover autocorrelation.
+6. **Volatility check** — ARCH-LM test: p = 0.160, no significant volatility clustering; GARCH not required.
+7. **Forecasting** — generated a 24-month-ahead forecast, correctly reproducing the seasonal wave and ongoing decline.
+8. **Validation** — trained on the first 300 months, held out the final 24 months, and scored the forecast against the real, hidden values.
+
+## Results
+
+| Metric | Value |
+|---|---|
+| RMSE | 0.5246 |
+| MAE | 0.4663 |
 
 Train size: 300 months. Test size: 24 months (held out, never seen during fitting).
 
-How to reproduce
+Sample of predicted vs actual (first 6 months of the test period):
 
+| Month | Predicted | Actual |
+|---|---|---|
+| 1 | 14.37 | 14.05 |
+| 2 | 15.27 | 14.97 |
+| 3 | 15.43 | 15.07 |
+| 4 | 14.65 | 14.16 |
+| 5 | 13.32 | 12.64 |
+| 6 | 11.81 | 11.62 |
+
+## Tools
+
+R, `forecast`, `tseries`, `FinTS`
+
+## How to reproduce
+
+See `analysis.R` for the full code, or the block below.
+
+```r
 # Load all libraries needed for the full workflow
 library(tseries)     # adf.test(), kpss.test()
 library(FinTS)        # ArchTest()
@@ -112,10 +135,4 @@ rmse_ice <- sqrt(mean((predicted_ice - actual_ice)^2))
 mae_ice  <- mean(abs(predicted_ice - actual_ice))
 rmse_ice
 mae_ice
-
-Tools
-R, forecast, tseries, FinTS
-
-Tools
-
-R, forecast, tseries, FinTS
+```
