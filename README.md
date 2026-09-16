@@ -49,6 +49,7 @@ R, `forecast`, `tseries`, `FinTS`
 
 ## How to reproduce
 
+<pre> ```r #
 # Load all libraries needed for the full workflow
 library(tseries)     # adf.test(), kpss.test()
 library(FinTS)        # ArchTest()
@@ -218,9 +219,4 @@ plot(forecast_result, main = "Arctic Sea Ice Extent Forecast")
 # Includes point forecast plus lower/upper bounds for both CI levels
 # ============================================
 print(forecast_result)
-
-
-
-## How to reproduce
-
-See `analysis.R` for the full code.
+``` </pre>
