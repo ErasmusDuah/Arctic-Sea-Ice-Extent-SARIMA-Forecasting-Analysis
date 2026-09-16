@@ -45,7 +45,7 @@ Sample of predicted vs actual (first 6 months of the test period):
 
 ## Tools
 
-R, `forecast`, `tseries`, `FinTS`
+R, `forecast`, `tseries`, `FinTS`, `rugarch`, `uroot`
 
 ## How to reproduce
 
